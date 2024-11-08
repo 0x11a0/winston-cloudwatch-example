@@ -1,0 +1,31 @@
+{
+  "name": "winston-cloudwatch-example",
+  "version": "1.0.0",
+  "description": "An example of how to integrate winston logger with cloudwatch into a typescript program",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "DEBUG=winston-cloudwatch ts-node src/app.ts"
+  },
+  "keywords": [
+    "winston",
+    "cloudwatch",
+    "typescript"
+  ],
+  "author": "0x11a0",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "winston": "^3.16.0",
+    "winston-cloudwatch": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
