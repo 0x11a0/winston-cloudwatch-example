@@ -62,7 +62,7 @@ export const loggers = {
 };
 ```
 
-## Add `express.d.ts` for Custom Request Types
+## Create the file `src/express.d.ts` for Custom Request Types
 This is only for Typescript apps that requires us to extend the `req` type.
 ```javascript
 import { Request } from 'express';
