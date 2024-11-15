@@ -29,6 +29,7 @@ This file will contain the logic for logging to different CloudWatch log streams
 import winston from 'winston';
 import 'winston-cloudwatch';
 import dotenv from 'dotenv';
+import { Request } from 'express';
 
 dotenv.config();
 
@@ -40,17 +41,18 @@ const createLoggerForStream = (logStreamName: string) => {
             new winston.transports.Console(),
             new (winston.transports as any).CloudWatch({
                 logGroupName: process.env.CLOUDWATCH_LOG_GROUP_NAME || 'MyAppLogs',
-                logStreamName,
+                logStreamName, // Use the dynamic log stream name
                 awsRegion: process.env.AWS_REGION,
                 jsonMessage: true,
                 awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
                 awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-                uploadRate: 1000,
+                uploadRate: 1000, // Adjust for faster uploads in testing
             })
         ]
     });
 };
 
+// Export individual loggers for each log stream
 export const loggers = {
     communication: createLoggerForStream('communication-transactions'),
     systemErrors: createLoggerForStream('system-errors'),
@@ -60,6 +62,26 @@ export const loggers = {
     identityVerification: createLoggerForStream('identity-verification'),
     apiPerformance: createLoggerForStream('api-performance'),
 };
+
+// Log entry helper
+interface LogEntryOptions {
+    action: string;
+    clientId: string;
+    additionalData?: object;
+    status?: "SUCCESS" | "FAILURE";
+}
+
+export const createLogEntry = (options: LogEntryOptions, req: Request) => ({
+    timestamp: new Date().toISOString(),
+    agentId: req.agentId || 'UNKNOWN_AGENT',
+    clientId: options.clientId,
+    action: options.action,
+    endpoint: req.originalUrl,
+    status: options.status || "SUCCESS",
+    requestIP: req.ip,
+    userRole: "agent",
+    ...options.additionalData,
+});
 ```
 
 ## Create the file `src/express.d.ts` for Custom Request Types
