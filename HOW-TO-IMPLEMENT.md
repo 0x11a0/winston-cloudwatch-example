@@ -88,6 +88,11 @@ app.use((req, res, next) => {
 ```
 
 ## 6. Implement the Logger in you app:
+First import the logger into the file with the functions:
+```javascript
+import { loggers, createLogEntry } from './logger';
+```
+
 Refer to inline comments.
 ```javascript
 // Example
